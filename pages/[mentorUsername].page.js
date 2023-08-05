@@ -91,6 +91,7 @@ function Index({ mentorDetail }) {
   //   }
   // };
 
+<<<<<<< HEAD
   // const handleBookSession = async (
   //   sessionName,
   //   mentorEmail,
@@ -110,6 +111,32 @@ function Index({ mentorDetail }) {
   //     sessionTime,
   //     sessionPrice,
   //   };
+=======
+  const sendMail = async (data) => {
+    try {
+      setIsLoading(true);
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/mentors/bookSessionMail`,
+        data
+      );
+      setIsLoading(false);
+      setModalPopup(false);
+      toast.success(
+        "Your session has been booked! Check your inbox for payment details."
+      ); // Success toast
+    } catch (error) {
+      setIsLoading(false);
+      if (error.response && error.response.status === 400) {
+        toast.error("You have already booked this session"); // Error toast
+      } else if (error.response && error.response.status === 405) {
+        toast.error("You are not allowed to book your own session"); // Error toast
+      } else {
+        console.error("Error sending mail:", error);
+        toast.error("Facing any problem? Email Us"); // Error toast
+      }
+    }
+  };
+>>>>>>> e5c7f36d22061da3e287b71e075ae56f6d871c26
 
   //   try {
   //     await sendMail(data);
@@ -131,6 +158,7 @@ function Index({ mentorDetail }) {
             mentorDetail={mentorDetail}
             onShare={() => setShowModal(true)}
           />
+<<<<<<< HEAD
 
           {/* session section */}
           <Section
@@ -196,6 +224,28 @@ function Index({ mentorDetail }) {
             </div>
           </Section>
 
+=======
+          {/* Session Cards Container */}
+          <div className="tw-flex tw-flex-col tw-items-stretch tw-max-w-[448px]">
+            {/* Session Cards for every session */}
+            {mentorDetail.bookSession.length !== 0 &&
+              mentorDetail.bookSession.map((session, index) => (
+                <SessionCard
+                  key={index}
+                  type={session.sessionType}
+                  name={session.sessionName}
+                  description={session.sessionDescription}
+                  duration={session.sessionMeetingDuration}
+                  pricePerSession={session.priceSession}
+                  handleBookSession={() => {
+                    setModalPopup(true);
+                    setSelectedSession(session);
+                  }}
+                  // handleBookSession={() => handleClick(session)}
+                />
+              ))}
+          </div>
+>>>>>>> e5c7f36d22061da3e287b71e075ae56f6d871c26
           {/* Share Mentor Page Modal */}
           {showModal && (
             <SharePageModal
